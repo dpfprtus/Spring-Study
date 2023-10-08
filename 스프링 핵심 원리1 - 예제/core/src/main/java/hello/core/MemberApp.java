@@ -9,7 +9,8 @@ import hello.core.member.MemberServiceImpl;
 public class MemberApp {
     //단축키 psvm
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
         Member member = new Member(1L, "memberA", Grade.VIP);
         memberService.join(member);
         //단축기 ctrl + alt + v
