@@ -1,10 +1,15 @@
 package hello.core.member;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class MemberServiceImpl implements MemberService{
     
     //추상화와 구체화에 동시에 의존하고 있다 -> DIP 위반
     private final MemberRepository memberRepository;
 
+    @Autowired //의존 관계 주입
     public MemberServiceImpl(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
