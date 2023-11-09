@@ -20,7 +20,7 @@ public class BeanLifeCycleTest {
 
         //bean 생명주기, destroyMethod에는 기본값이 (inffered)추론으로 일반적으로
         //사용하는 종료메서드인 close, shutdown 등의 메서드를 자동으로 호출해준다.
-        @Bean(initMethod = "init",destroyMethod = "close")
+        @Bean
         public NetworkClient networkClient() {
             NetworkClient networkClient = new NetworkClient();
             networkClient.setUrl("http://hello-spring.dev");

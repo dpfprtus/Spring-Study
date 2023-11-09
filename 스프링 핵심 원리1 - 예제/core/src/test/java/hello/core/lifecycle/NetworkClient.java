@@ -1,6 +1,8 @@
 package hello.core.lifecycle;
 
-
+//javax는 자바진영에서 공식적으로 지원하는 라이브러리들이다.
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 public class NetworkClient  {
 
@@ -30,12 +32,14 @@ public class NetworkClient  {
         System.out.println("close " + url);
     }
 
+    @PostConstruct
     public void init() {
         System.out.println("NetworkClient.inits");
         connect();
         call("초기화 연결 메세지");
     }
 
+    @PreDestroy
     public void close() {
         System.out.println("NetworkClient.close");
         disconnect();
