@@ -1,6 +1,7 @@
 package jpabook.jpashop.repository;
 
 import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.domain.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,11 @@ public class OrderRepository {
                 .setParameter("name",orderSearch.getMemberName())
                 .setMaxResults(1000) //최대 1000건
                 .getResultList();
+
+    }
+
+    //JPA Criteria로 동적쿼리 해결
+    public List<Order> findAllByCriteria(OrderSearch orderSearch) {
 
     }
 }
