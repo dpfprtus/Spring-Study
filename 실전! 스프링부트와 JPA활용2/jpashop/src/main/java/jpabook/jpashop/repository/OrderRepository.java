@@ -67,6 +67,15 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<SimpleOrderQueryDto> findOrderDtos() {
+        return em.createQuery(
+                "select new jpabook.jpashop.repository.SimpleOrderQueryDto(o.id,m.name,o.orderDate,o.status,d.address) "+
+                        " from Order o" +
+                        " join o.member m" +
+                        " join o.delivery d", SimpleOrderQueryDto.class
+        ).getResultList();
+    }
+
     //JPA Criteria로 동적쿼리 해결
 //    public List<Order> findAllByCriteria(OrderSearch orderSearch) {
 //
