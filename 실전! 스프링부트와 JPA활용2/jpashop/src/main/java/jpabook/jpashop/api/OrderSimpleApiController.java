@@ -46,6 +46,15 @@ public class OrderSimpleApiController {
         return result;
     }
 
+    //쿼리가 한번 나간다. fetch Join 100%이해 필요.
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDto> ordersV3(){
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        return orders.stream()
+                .map(SimpleOrderDto::new)
+                .collect(Collectors.toList());
+    }
+
     @Data
     static class SimpleOrderDto{
         private Long orderId;
