@@ -84,6 +84,16 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<Order> findAllWithItem() {
+        //distinct로 fetch Join시 발생하는 데이터 뻥튀기 해결 => 일단 디비에서 데이터를 가져온 후 Order 고유값이 같다면 중복제거
+        return em.createQuery(
+                "select distinct o from Order o" +
+                " join fetch o.member m"+
+                " join fetch o.delivery d" +
+                " join fetch o.orderItems oi" +
+                " join fetch oi.item",Order.class).getResultList();
+    }
+
     //JPA Criteria로 동적쿼리 해결
 //    public List<Order> findAllByCriteria(OrderSearch orderSearch) {
 //

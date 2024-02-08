@@ -42,6 +42,18 @@ public class OrderApiController {
         return result;
     }
 
+    //10번넘게 나가던 쿼리가 한번 나간다 => 일대다 fetch join이기 때문에 페이징 불가능
+    @GetMapping("/api/v3/orders")
+    public List<OrderDto> orderV3() {
+        List<Order> orders = orderRepository.findAllWithItem();
+        for (Order order : orders) {
+            System.out.println("order " + order + " id= "+ order.getId());
+        }
+        List<OrderDto> result = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(Collectors.toList());
+        return result;
+     }
     @Getter
     static class OrderDto{
         private Long orderId;
