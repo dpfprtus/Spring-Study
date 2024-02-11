@@ -11,6 +11,7 @@ import jpabook.jpashop.repository.OrderSearch;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -54,6 +55,19 @@ public class OrderApiController {
                 .collect(Collectors.toList());
         return result;
      }
+
+    //Paging 및 성능 최적화, 쿼리 갯수 : 1,1,1
+    @GetMapping("/api/v3.1/orders")
+    public List<OrderDto> orderV3_page(
+            @RequestParam(value = "offset",defaultValue = "0") int offset,
+            @RequestParam(value = "limit",defaultValue = "100") int limit) {
+        List<Order> orders = orderRepository.findAllWithWithMemberDelivery(offset,limit);
+
+        List<OrderDto> result = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(Collectors.toList());
+        return result;
+    }
     @Getter
     static class OrderDto{
         private Long orderId;

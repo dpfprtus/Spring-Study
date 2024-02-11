@@ -94,6 +94,23 @@ public class OrderRepository {
                 " join fetch oi.item",Order.class).getResultList();
     }
 
+    public List<Order> findAllWithWithMemberDelivery() {
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m"+
+                        " join fetch o.delivery d",Order.class).getResultList();
+    }
+
+    public List<Order> findAllWithWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
     //JPA Criteria로 동적쿼리 해결
 //    public List<Order> findAllByCriteria(OrderSearch orderSearch) {
 //
