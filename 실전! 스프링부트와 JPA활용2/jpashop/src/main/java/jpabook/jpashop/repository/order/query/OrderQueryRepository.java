@@ -44,6 +44,7 @@ public class OrderQueryRepository {
                 .getResultList();
     }
 
+    //쿼리 두번
     public List<OrderQueryDto> findAllByDto_optimization() {
         List<OrderQueryDto> result = findOrders();
 
@@ -73,5 +74,16 @@ public class OrderQueryRepository {
                 .map(o -> o.getOrderId())
                 .collect(Collectors.toList());
         return orderIds;
+    }
+
+    public List<OrderFlatDto> findAllByDto_flat() {
+        return em.createQuery(
+                "select new jpabook.jpashop.repository.order.query.OrderFlatDto(o.id,o.orderDate,d.address,o.status,m.name,i.name,oi.orderPrice,oi.count)" +
+                        " from Order o" +
+                        " join o.member m" +
+                        " join o.delivery d" +
+                        " join o.orderItems oi" +
+                        " join oi.item i", OrderFlatDto.class
+        ).getResultList();
     }
 }
