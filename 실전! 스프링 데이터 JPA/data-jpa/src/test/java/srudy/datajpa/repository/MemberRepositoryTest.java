@@ -1,5 +1,7 @@
 package srudy.datajpa.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
 
@@ -33,6 +35,8 @@ class MemberRepositoryTest {
     MemberRepository memberRepository;
     @Autowired
     TeamRepository teamRepository;
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     public void testMember() {
@@ -169,7 +173,8 @@ class MemberRepositoryTest {
         int age = 10;
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
         //when
-        Slice<Member> page = memberRepository.findByAge(age,pageRequest);
+        Page<Member> page = memberRepository.findByAge(age,pageRequest);
+        Page<MemberDto> toMap = page.map(member -> new MemberDto(member.getId(), member.getUsername(), null));
 
         //then
         List<Member> content = page.getContent();
@@ -180,6 +185,27 @@ class MemberRepositoryTest {
 //        assertThat(page.getTotalPages()).isEqualTo(2);
         assertThat(page.isFirst()).isTrue();
         assertThat(page.hasNext()).isTrue();
+    }
+    @Test
+    public void bulkUpdate() {
+        //given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+        //when
+        int resultCount = memberRepository.bulkAgePlus(20);
+        //벌크 연산은 디비에 바로 쿼리를 날리기 때문에, 벌크 연산 후에는 영속성 컨텍스트를 날려야 한다.
+        //참고 : JPQL 실행 시 영속성 컨텍스트를 먼저 flush하고 쿼리 실행한다.
+
+//        em.clear();
+
+        List<Member> result = memberRepository.findByUsername("member5");
+        Member member5 = result.get(0);
+        System.out.println("member5 = " + member5);
+        //then
+        assertThat(resultCount).isEqualTo(3);
     }
 
     }
