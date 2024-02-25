@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of={"id","username","age"})
+@NamedEntityGraph(name = "Member.all",attributeNodes = @NamedAttributeNode("team"))
 public class Member {
 
     //JPA 표준 스펙이 기본 생성자가 있어야 한다. -> private으로 닫아놓으면 안된다.
