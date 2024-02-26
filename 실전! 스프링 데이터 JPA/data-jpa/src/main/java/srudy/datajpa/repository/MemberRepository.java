@@ -4,7 +4,7 @@ import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import srudy.datajpa.dto.MemberDto;
@@ -67,5 +67,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>,MemberRepo
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Member> findLockByUsername(String username);
 
-
+    //Projection
+    <T>List<T> findProjectionsByUsername(@Param("username") String username, Class<T> T);
 }
